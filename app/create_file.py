@@ -1,6 +1,6 @@
 import argparse
-import os
 import datetime
+import os
 
 
 def terminal_to_file() -> None:
@@ -11,12 +11,13 @@ def terminal_to_file() -> None:
     parser.add_argument("-d",
                         nargs="+",
                         default=[],
-                        help="'-d dir1 dir2' - creates directory dir1/dir2")
+                        help="\"-d dir1 dir2\" "
+                             "- creates directory \"dir1/dir2\".")
     parser.add_argument("-f",
                         type=str,
                         default=None,
-                        help="'-f file.txt' - creates 'file.txt' "
-                             "in current directory")
+                        help="\"-f file.txt\" "
+                             "- creates \"file.txt\" in current directory.")
 
     try:
         args = parser.parse_args()
