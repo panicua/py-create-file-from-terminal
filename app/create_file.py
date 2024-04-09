@@ -1,6 +1,7 @@
 import argparse
 import datetime
 import os
+import re
 
 
 def terminal_to_file() -> None:
@@ -29,6 +30,8 @@ def terminal_to_file() -> None:
     if d_arguments_list:
         create_folder(d_arguments_list)
     if f_argument_str:
+        if not is_valid_filename(filename=f_argument_str):
+            raise NameError("File is invalid")
         create_file(d_arguments_list, f_argument_str)
 
 
@@ -56,6 +59,18 @@ def create_file(list_args_dir: list, file_name: str) -> None:
 
 
 def writing_to_file(path: str, mode: str) -> None:
+    user_input = accept_user_input()
+
+    if len(user_input) < 2:
+        return print("You cannot add an empty message")
+
+    with open(path, mode) as file:
+        file.writelines(datetime.date.strftime(datetime.datetime.now(),
+                                               "%Y-%m-%d %H:%M:%S") + "\n")
+        file.writelines(user_input)
+
+
+def accept_user_input() -> list:
     full_message = list()
 
     while True:
@@ -64,14 +79,12 @@ def writing_to_file(path: str, mode: str) -> None:
             full_message.append("\n")
             break
         full_message.append(message + "\n")
+    return full_message
 
-    if len(full_message) < 2:
-        return print("You cannot add an empty message")
 
-    with open(path, mode) as file:
-        file.writelines(datetime.date.strftime(datetime.datetime.now(),
-                                               "%Y-%m-%d %H:%M:%S") + "\n")
-        file.writelines(full_message)
+def is_valid_filename(filename: str) -> bool:
+    # re from Google
+    return bool(re.match(r"^[\w.]+$", filename))
 
 
 if __name__ == "__main__":
